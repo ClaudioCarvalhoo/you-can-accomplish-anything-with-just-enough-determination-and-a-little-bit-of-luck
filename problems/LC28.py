@@ -1,3 +1,6 @@
+# O(n * m)
+# n = len(haystack) | m = len(needle)
+
 class Solution:
     def strStr(self, haystack: str, needle: str) -> int:
         if len(needle) == 0:
