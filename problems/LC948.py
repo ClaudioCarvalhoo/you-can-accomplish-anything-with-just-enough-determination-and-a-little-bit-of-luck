@@ -1,6 +1,8 @@
 # O(n log(n))
 # n = len(tokens)
 
+from typing import List
+
 
 class Solution:
     def bagOfTokensScore(self, tokens: List[int], P: int) -> int:

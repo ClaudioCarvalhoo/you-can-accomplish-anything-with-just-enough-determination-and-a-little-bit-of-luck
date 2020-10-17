@@ -1,6 +1,8 @@
 # O(1)
 # len(cells) = 8
 
+from typing import List
+
 
 class Solution:
     def prisonAfterNDays(self, cells: List[int], N: int) -> List[int]:
