@@ -24,3 +24,33 @@ class Solution:
             i += 1
 
         return stack.pop()["string"]
+
+
+class Solution:
+    def decodeString(self, s: str) -> str:
+        i = 0
+        res, end = self.helper(s, 0, 1)
+        return ''.join(res)
+        
+    def helper(self, s, start, repeats):
+        i = start
+        res = []
+        while i < len(s) and s[i] != "]":
+            if not s[i].isdigit():
+                res.append(s[i])
+            else:
+                subRes, end = self.decodeSubsequence(s, i)
+                res += subRes
+                i = end
+            i += 1
+        return (res * repeats, i)
+                
+                
+    def decodeSubsequence(self, s, start):
+        i = start
+        number = 0
+        while s[i].isdigit():
+            number = (number*10) + int(s[i])
+            i += 1
+        res, end = self.helper(s, i+1, number)
+        return (res, end)
