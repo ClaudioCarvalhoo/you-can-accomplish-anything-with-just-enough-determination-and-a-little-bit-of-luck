@@ -21,7 +21,7 @@
 # Space
 # O(1)
 
-
+# Sol 1
 def find_grants_cap(grantsArray, newBudget):
     grantsArray.sort()
     grantsSum = 0
@@ -49,3 +49,15 @@ def find_grants_cap(grantsArray, newBudget):
         nonCappedSum += i
 
     return (newBudget - nonCappedSum) / float(amountCapped)
+
+
+# Sol 2
+def find_grants_cap(grantsArray, newBudget):
+    grantsArray.sort()
+    sumSoFar = 0
+    for i in range(len(grantsArray)):
+        capCandidate = grantsArray[i]
+        if sumSoFar + (capCandidate * (len(grantsArray) - i)) > newBudget:
+            return float(newBudget - sumSoFar) / (len(grantsArray) - i)
+        sumSoFar += grantsArray[i]
+    return grantsArray[-1]
