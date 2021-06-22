@@ -1,32 +1,44 @@
-class UndergroundSystem:
+class CheckIn:
+    def __init__(self, station, time):
+        self.station = station
+        self.time = time
+
+
+class RouteStats:
     def __init__(self):
-        self.checkedCustomers = {}
-        self.travelTimes = {}
+        self.passengers = 0
+        self.totalTime = 0
+
+    def addNewTime(self, time):
+        self.passengers += 1
+        self.totalTime += time
+
+    def getAverageTime(self):
+        return self.totalTime / self.passengers
+
+
+class UndergroundSystem:
+
+    # O(1)
+    def __init__(self):
+        self.checkIns = {}
+        self.routeStats = {}
 
     # O(1)
     def checkIn(self, id: int, checkInStation: str, t: int) -> None:
-        self.checkedCustomers[id] = (checkInStation, t)
+        self.checkIns[id] = CheckIn(checkInStation, t)
 
     # O(1)
     def checkOut(self, id: int, checkOutStation: str, t: int) -> None:
-        checkInStation, checkInTime = self.checkedCustomers[id]
-        elapsedTime = t - checkInTime
-        del self.checkedCustomers[id]
-
-        if checkInStation not in self.travelTimes:
-            self.travelTimes[checkInStation] = {}
-        if checkOutStation not in self.travelTimes[checkInStation]:
-            self.travelTimes[checkInStation][checkOutStation] = {"count": 0, "sum": 0}
-
-        self.travelTimes[checkInStation][checkOutStation]["count"] += 1
-        self.travelTimes[checkInStation][checkOutStation]["sum"] += elapsedTime
+        checkInStation, checkInTime = self.checkIns[id].station, self.checkIns[id].time
+        del self.checkIns[id]
+        if (checkInStation, checkOutStation) not in self.routeStats:
+            self.routeStats[(checkInStation, checkOutStation)] = RouteStats()
+        self.routeStats[(checkInStation, checkOutStation)].addNewTime(t - checkInTime)
 
     # O(1)
     def getAverageTime(self, startStation: str, endStation: str) -> float:
-        return (
-            self.travelTimes[startStation][endStation]["sum"]
-            / self.travelTimes[startStation][endStation]["count"]
-        )
+        return self.routeStats[(startStation, endStation)].getAverageTime()
 
 
 # Your UndergroundSystem object will be instantiated and called as such:
